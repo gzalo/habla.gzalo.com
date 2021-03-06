@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Procesamiento del Habla - TP Final</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+	
+	<link href="css/styles.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+	<div class="container">
+		<h3>Reconocimiento - Gramática finita</h3>
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+			<h3 class="panel-title">Grabación desde micrófono</h3>
+		  </div>
+		  <div class="panel-body" id="grabmic">
+			<div class="btn-group" role="controles" aria-label="controles">
+				<button class="btn btn-default btn-danger" onclick="startRecording(this);">Grabar</button>
+				<button class="btn btn-default" onclick="stopRecording(this);" disabled>Terminar Grabación</button>
+				<button class="btn btn-default" data-toggle="collapse" data-target="#log">Mostrar Logs</button>
+			</div>
+			<span class="tiempo">0.00 segundos</span>
+			<span class="indicador"></span>
+			<pre id="log" class="collapse"></pre>
+		  </div>
+		  <div class="panel-footer">
+			Para que el reconocimiento sea eficaz, es necesario que la grabación sea clara, que no esté saturando el micrófono. <br/>
+			Además es conveniente evitar insertar silencios al comienzo y al final de las grabaciones.
+		  </div>
+		</div>
+		
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+			<h3 class="panel-title">Carga de archivos</h3>
+		  </div>
+		  <div class="panel-body" id="subidawav">
+			<form enctype="multipart/form-data" method="POST" id="subida">
+				<input type="hidden" name="MAX_FILE_SIZE" value="500000" />
+				<label for="data">Archivo a cargar <span style="color:#737373">- Únicamente WAVs de 16 bits a 16 KHz</span></label>
+				<input name="data" id="userfile" type="file" />
+				<br/>
+				<button type="submit" class="btn btn-default" name="enviar">Enviar</button>
+				<span class="indicador"></span>
+			</form>
+		  </div>
+		</div>
+		
+		<div class="panel panel-default">
+		 <div class="panel-heading">
+			<h3 class="panel-title">Frases reconocidas:</h3>
+		  </div>
+		  <div class="panel-body">
+			  <ul>
+			<li>Llamar / Llame al <em>Número</em> (uno o más dígitos)</li>
+			<li>Comuníqueme con <em>Nombre</em> [<em>Apellido</em>]
+			<ul><li>Juan [Fernandez], Juana, Patricia, Pedro [Rodriguez], Andrea, Andres [Perez]</li>
+			</li>
+			</ul>
+		  </div>
+		</div>
+		<!--
+		<div class="jumbotron">
+
+		<h1>Reconocimiento de habla</h1>
+		<h2>Con gramática finita</h2>
+		<h3>Por <a href="http://gzalo.com">Gonzalo Ávila Alterach</a></h3>
+		<hr/>
+		<p>Frases reconocidas:
+		<ul>
+		<li>Llamar / Llame al <em>Número</em> (uno o más dígitos)</li>
+		<li>Comuníqueme con <em>Nombre</em> [<em>Apellido</em>]
+		<ul><li>Juan [Fernandez], Juana, Patricia, Pedro [Rodriguez], Andrea, Andres [Perez]</li> 
+		</li>
+		
+		</ul></p>
+		</div>-->
+		
+	
+	</div>
+	
+	<footer class="footer">
+      <div class="container">
+        <p class="text-muted">2016 - <a href="http://gzalo.com">Gonzalo Ávila Alterach</a> - Las grabaciones realizadas son almacenadas y pueden ser utilizadas sin fines comerciales.</p>
+      </div>
+    </footer>
+	
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/recorder.js"></script>
+	<script src="js/resampler.js"></script>
+	<script src="js/grabar.js"></script>
+  </body>
+</html>
