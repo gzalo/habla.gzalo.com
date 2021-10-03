@@ -1,3 +1,5 @@
+const API_URL = "https://api-habla.gzalo.com/process";
+
 function __log(e, data) {
 	$('#log').append(e + " " + (data || '') + "\n");
 }
@@ -25,7 +27,6 @@ function startRecording(button) {
 	
 	decsegundos = 0;
 	cronometro = setInterval(function(){ actualizarCronometro() }, 10);
-
 }
 
 function actualizarCronometro(){
@@ -55,7 +56,7 @@ function enviarWAV(blob) {
 	
 	$.ajax({
 		type: 'POST',
-		url: 'procesar.php',
+		url: API_URL,
 		data: fd,
 		processData: false,
 		contentType: false
@@ -116,7 +117,7 @@ $("form#subida").submit(function(){
 	$("#subidawav .indicador").html('<img src="img/spinner.gif" alt="Subiendo..."/>');
 
     $.ajax({
-        url: 'procesar.php',
+        url: API_URL,
         type: 'POST',
         data: formData,
         async: false,
