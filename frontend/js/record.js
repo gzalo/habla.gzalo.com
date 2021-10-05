@@ -4,21 +4,50 @@ function __log(e, data) {
 	$('#log').append(e + " " + (data || '') + "\n");
 }
 
-var audio_context;
+let audio_context;
 var recorder;
 var cronometro;
 var decsegundos = 0;
 
-function startUserMedia(stream) {
-	var input = audio_context.createMediaStreamSource(stream);
-	window.horrible_hack_for_mozilla = input;
-	__log('Media stream created.');
+function startAudioContext(){
+	const AudioContext = window.AudioContext || window.webkitAudioContext;
 
-	recorder = new Recorder(input);
-	__log('Recorder initialised.');
+	if (AudioContext) {
+		audio_context = new AudioContext();
+
+		__log('Audio context set up.');
+	} else {
+		__log('No web audio support in this browser!');
+	}
 }
 
-function startRecording(button) {
+async function startRecording(button) { 
+	if(!audio_context) startAudioContext();
+	
+	try {
+		const stream = await navigator.mediaDevices.getUserMedia(
+			{
+				audio:  {
+					"mandatory": {
+						"googEchoCancellation": "false",
+						"googAutoGainControl": "false",
+						"googNoiseSuppression": "false",
+						"googHighpassFilter": "false"
+					}
+				}
+			}
+		);
+		
+		var input = audio_context.createMediaStreamSource(stream);
+		__log('Media stream created.');
+	
+		recorder = new Recorder(input);
+		__log('Recorder initialised.');
+
+	} catch(e) {
+		__log('No live audio input: ' + e + ' ' + e.name);
+	}
+
 	recorder && recorder.record();
 	button.disabled = true;
 	button.nextElementSibling.disabled = false;
@@ -68,41 +97,7 @@ function enviarWAV(blob) {
 	recorder.clear();		
 }
 
-window.onload = function init() {
-	$('.tiempo').hide();
-	var contextClass = (window.AudioContext || 
-	window.webkitAudioContext || 
-	window.mozAudioContext || 
-	window.oAudioContext || 
-	window.msAudioContext);
-
-	if (contextClass) {
-		// Web Audio API is available.
-		audio_context = new contextClass();
-
-		navigator.getUserMedia = ( navigator.getUserMedia ||
-		   navigator.webkitGetUserMedia ||
-		   navigator.mozGetUserMedia ||
-		   navigator.msGetUserMedia);
-
-		__log('Audio context set up.');
-		__log('navigator.getUserMedia ' + (navigator.getUserMedia ? 'available.' : 'not present!'));
-		__log('Sample Rate: ' + audio_context.sampleRate);
-	} else {
-		__log('No web audio support in this browser!');
-	}
-	  
-	  
-	navigator.getUserMedia({audio:  {"mandatory": {
-                    "googEchoCancellation": "false",
-                    "googAutoGainControl": "false",
-                    "googNoiseSuppression": "false",
-                    "googHighpassFilter": "false"
-                },
-	"optional": []}}, startUserMedia, function(e) {
-	  __log('No live audio input: ' + e + ' ' + e.name);
-	});
-};
+$('.tiempo').hide();
 
 
 $("form#subida").submit(function(){

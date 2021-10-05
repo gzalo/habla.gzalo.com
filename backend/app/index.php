@@ -1,8 +1,8 @@
 <?php
 	
-	$PATH_DATA = "/data/";
+	$PATH_DATA = "/var/www/habla/data/";
 	$PATH_HTK = "/htk/";
-	$PATH_UPL = "/uploads/";
+	$PATH_UPL = "/var/www/habla/uploads/";
 
 	header('Access-Control-Allow-Origin: https://habla.gzalo.com');
 	
