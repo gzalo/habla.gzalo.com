@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  habla:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: 'unless-stopped'
+    volumes:
+      - ./app:/var/www/html/
+      - ./data:/data/
+      - ./uploads:/uploads/
+    ports: 
+      - '1235:80'

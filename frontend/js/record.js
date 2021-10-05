@@ -1,4 +1,4 @@
-const API_URL = "https://api-habla.gzalo.com/process";
+const API_URL = "https://api-habla.gzalo.com/";
 
 function __log(e, data) {
 	$('#log').append(e + " " + (data || '') + "\n");

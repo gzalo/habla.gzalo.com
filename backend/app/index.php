@@ -1,8 +1,11 @@
 <?php
 	
-	$PATH_HTK = "C:/Users/Gonzalo/Dropbox/Webs/casa.gzalo.com/habla/proc/";
-	$PATH_UPL = "C:/Users/Gonzalo/Dropbox/Webs/casa.gzalo.com/habla/subidas/";
+	$PATH_DATA = "/data/";
+	$PATH_HTK = "/htk/";
+	$PATH_UPL = "/uploads/";
 
+	header('Access-Control-Allow-Origin: https://habla.gzalo.com');
+	
 	function get_string_between($string, $start, $end){
 		$string = ' ' . $string;
 		$ini = strpos($string, $start);
@@ -18,14 +21,14 @@
 	}
 
 	function procesar($nombre){
-		global $PATH_HTK, $PATH_UPL;
+		global $PATH_HTK, $PATH_UPL, $PATH_DATA;
 		
 		$time_start = microtime_float();
 		$nombremfc = pathinfo($nombre, PATHINFO_FILENAME) . '.mfc';
 		
 		chdir($PATH_UPL);
 
-		$comando1 = $PATH_HTK . 'HCopy -T 1 -C ../config.hcopy ' . escapeshellcmd($nombre) . ' ' . escapeshellcmd($nombremfc);
+		$comando1 = $PATH_HTK . 'HCopy -T 1 -C ' . $PATH_DATA . 'config.hcopy ' . escapeshellcmd($nombre) . ' ' . escapeshellcmd($nombremfc);
 		exec($comando1, $resultado_hcopy);
 		
 		if(count($resultado_hcopy) > 1){
@@ -35,7 +38,7 @@
 			//echo $resultado_hcopy[0] . "<br/>";
 		}
 
-		$comando2 = $PATH_HTK . "HVite -T 1 -l '*' -p 0.0 -s 5.0 -C ../config.common -o NSTWM -w ../wdnet -H ../macros -H ../hmmdefs ../diccionario ../fonemas " . escapeshellcmd($nombremfc);
+		$comando2 = $PATH_HTK . "HVite -T 1 -l '*' -p 0.0 -s 5.0 -C " . $PATH_DATA . "config.common -o NSTWM -w " . $PATH_DATA . "wdnet -H " . $PATH_DATA . "macros -H " . $PATH_DATA . "hmmdefs " . $PATH_DATA . "diccionario " . $PATH_DATA . "fonemas " . escapeshellcmd($nombremfc);
 		
 		exec($comando2, $resultado_hvite);	
 			
